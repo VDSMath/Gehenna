@@ -12,13 +12,14 @@ public class AIDisc : MonoBehaviour {
                  distance;
     private float timeCounter,
                   angle;
-    public GameObject player;
+    private GameObject player;
     private bool aggro;
 
 	// Use this for initialization
 	void Start () {
         aggro = false;
         angle = 0;
+        player = GameObject.FindGameObjectWithTag("Player");
 	}
 	
 	// Update is called once per frame
