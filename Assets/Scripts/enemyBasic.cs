@@ -9,6 +9,7 @@ public class enemyBasic : MonoBehaviour {
 
     public GameObject explosion;
 
+
 	// Use this for initialization
 	void Start ()
     {
@@ -33,5 +34,6 @@ public class enemyBasic : MonoBehaviour {
         health -= amount;
         Debug.Log("Damage");
     }
+		
 
 }

@@ -71,7 +71,10 @@ public class playerController : MonoBehaviour {
     }
 	
 	void Update ()
-    {
+	{
+
+		Cursor.lockState = CursorLockMode.Locked;
+
         //Mode managing.
         if (onSpeed == true)
         {
