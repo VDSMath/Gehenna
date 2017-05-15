@@ -47,6 +47,15 @@ public class playerController : MonoBehaviour {
     //int aimX = Screen.width / 2;
     //int aimY = Screen.height / 2;
 
+
+    public GameObject _base,
+                      explosion,
+                      outOfBoundsText;
+    public float mapRadius,
+                 outOfBoundsTimer;
+    private bool outOfBounds;
+    private float _outOfBoundsTimer;
+
     void Start ()
     {
         Cursor.visible = false;
@@ -68,6 +77,9 @@ public class playerController : MonoBehaviour {
         onSpeed = true;
         onShield = false;
         onAttack = false;
+
+        outOfBoundsText.GetComponent<Text>().enabled = false;
+        _outOfBoundsTimer = outOfBoundsTimer;
     }
 	
 	void Update ()
@@ -170,6 +182,59 @@ public class playerController : MonoBehaviour {
             SceneManager.LoadScene(0);
         }
 
+        CheckBaseDistance();
+
+        if (outOfBounds)
+        {
+            outOfBoundsText.GetComponent<Text>().enabled = true;
+            WarnPlayer();
+        }
+        else
+        {
+            outOfBoundsText.GetComponent<Text>().enabled = false;
+        }
+    }
+
+    public void CheckBaseDistance()
+    {
+        if(Mathf.Abs(Vector3.Distance(transform.position, _base.transform.position)) >= mapRadius)
+        {
+            outOfBounds = true;
+        }
+        else
+        {
+            _outOfBoundsTimer = outOfBoundsTimer;
+            outOfBounds = false;
+        }
+    }
+
+    private void WarnPlayer()
+    {
+        _outOfBoundsTimer -= Time.deltaTime;                                                  //Converte o float timer para um string com duas casas decimais.
+        outOfBoundsText.GetComponent<Text>().text = "WARNING!!!\nYOU ARE LEAVING THE AREA!!!\n" + _outOfBoundsTimer.ToString("F2");
+
+        if(_outOfBoundsTimer <= 0)
+        {
+            KillPlayer();
+        }
+    }
+
+    private void KillPlayer()
+    {
+        outOfBoundsText.GetComponent<Text>().text = "You were out of bounds for too long";
+        GameObject e = Instantiate(explosion);
+        e.transform.position = transform.position;
+
+        Transform[] children = this.GetComponentsInChildren<Transform>();
+
+        foreach(Transform child in children)
+        {
+            if(child.gameObject != this.gameObject)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+        }
+        GameObject.Destroy(this.gameObject);
     }
 
     public void healthDamage(float amount)
