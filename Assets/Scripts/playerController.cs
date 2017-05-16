@@ -195,6 +195,14 @@ public class playerController : MonoBehaviour {
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag ==  "Ground" || collision.gameObject.tag == "Enemy")
+        {
+            KillPlayer();
+        }
+    }
+
     public void CheckBaseDistance()
     {
         if(Mathf.Abs(Vector3.Distance(transform.position, _base.transform.position)) >= mapRadius)
@@ -215,13 +223,13 @@ public class playerController : MonoBehaviour {
 
         if(_outOfBoundsTimer <= 0)
         {
+            outOfBoundsText.GetComponent<Text>().text = "You were out of bounds for too long.";
             KillPlayer();
         }
     }
 
     private void KillPlayer()
     {
-        outOfBoundsText.GetComponent<Text>().text = "You were out of bounds for too long";
         GameObject e = Instantiate(explosion);
         e.transform.position = transform.position;
 
