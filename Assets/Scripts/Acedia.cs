@@ -39,7 +39,7 @@ public class Acedia : MonoBehaviour {
         Transform[] allChildren = launchPads.GetComponentsInChildren<Transform>();      
         foreach (Transform child in allChildren)
         {
-            if (child.transform.parent.name != "Player")
+            if (child.transform.parent.name == "Launch Pad")
             {
                 Instantiate(minion, child.transform.position + new Vector3(0, 10), Quaternion.identity, child);
             }

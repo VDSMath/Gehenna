@@ -12,7 +12,7 @@ public class AIDisc : MonoBehaviour {
                  distance;
     private float timeCounter,
                   angle;
-    private GameObject player;
+    public GameObject player;
     private bool aggro;
 
 	// Use this for initialization
