@@ -48,6 +48,7 @@ public class playerController : MonoBehaviour {
     //int aimY = Screen.height / 2;
     public float enemyLife,
                  enemyMaxLife;
+    private bool targeting;    
 
     public GameObject _base,
                       explosion,
@@ -86,6 +87,7 @@ public class playerController : MonoBehaviour {
         enemyLife = 0;
         enemyMaxLife = 0;
         enemyLifeBar.SetActive(false);
+        targeting = false;
     }
 	
 	void Update ()
@@ -207,8 +209,10 @@ public class playerController : MonoBehaviour {
         RaycastHit aim;
         if (Physics.Raycast(sPoint.transform.position, sPoint.transform.forward, out aim, aimRange))
         {
-            if (aim.transform.gameObject.tag == "Enemy")
+            if (aim.transform.gameObject.tag == "Enemy" && aim.transform.gameObject != null)
             {
+                targeting = true;
+                StopCoroutine(WaitWithLifeBar());
                 enemyLifeBar.SetActive(true);
                 enemyLife = aim.transform.GetComponent<AIDisc>().life;
                 enemyMaxLife = aim.transform.GetComponent<AIDisc>().maxLife;
@@ -217,8 +221,19 @@ public class playerController : MonoBehaviour {
         }
         else
         {
-            enemyLifeBar.SetActive(false);
+            if (enemyLifeBar.activeSelf && targeting)
+            {
+                targeting = false;
+                //enemyLifeBar.SetActive(false);
+                StartCoroutine(WaitWithLifeBar());
+            }
         }
+    }
+
+    private IEnumerator WaitWithLifeBar()
+    {
+        yield return new WaitForSeconds(1f);
+        enemyLifeBar.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)

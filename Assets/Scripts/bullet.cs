@@ -13,8 +13,6 @@ public class bullet : MonoBehaviour {
     {
         //Destroy the bullet after a set amount of time to prevent bloating.
         Destroy(gameObject, destroyTime);
-        //Getting the damage value from the player.
-        damage = player.GetComponent<playerController>().damage;
         //Ignore collisions with player.
         player = GameObject.FindGameObjectWithTag("Player");
         Physics.IgnoreCollision(player.GetComponent<Collider>(), GetComponent<Collider>());
@@ -22,8 +20,9 @@ public class bullet : MonoBehaviour {
 	
 	void Update ()
     {
-		
-	}
+        //Getting the damage value from the player.
+        damage = player.GetComponent<playerController>().damage;
+    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -34,8 +33,7 @@ public class bullet : MonoBehaviour {
         if (target.tag == "Enemy")
         {
             //Causing damage based on the player's damage value.
-            Debug.Log("damage");
-            target.GetComponent<enemyBasic>().takeDamage(damage);
+            target.GetComponent<AIDisc>().TakeDamage(damage);
         }
         //Also destroying the bullet on collision.
         Destroy(this.gameObject);
