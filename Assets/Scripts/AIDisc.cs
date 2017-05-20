@@ -9,7 +9,9 @@ public class AIDisc : MonoBehaviour {
                  aggroRadius,
                  step,
                  shootSpeed,
-                 distance;
+                 distance,
+                 life,
+                 maxLife;
     private float timeCounter,
                   angle;
     public GameObject player;

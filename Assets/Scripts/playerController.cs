@@ -46,11 +46,13 @@ public class playerController : MonoBehaviour {
     public GameObject crosshair;
     //int aimX = Screen.width / 2;
     //int aimY = Screen.height / 2;
-
+    public float enemyLife,
+                 enemyMaxLife;
 
     public GameObject _base,
                       explosion,
-                      outOfBoundsText;
+                      outOfBoundsText,
+                      enemyLifeBar;
     public float mapRadius,
                  outOfBoundsTimer;
     private bool outOfBounds;
@@ -80,6 +82,10 @@ public class playerController : MonoBehaviour {
 
         outOfBoundsText.GetComponent<Text>().enabled = false;
         _outOfBoundsTimer = outOfBoundsTimer;
+
+        enemyLife = 0;
+        enemyMaxLife = 0;
+        enemyLifeBar.SetActive(false);
     }
 	
 	void Update ()
@@ -169,6 +175,7 @@ public class playerController : MonoBehaviour {
             crosshair.SetActive(false);
         }
 
+        FindEnemy();
 
         //Shooting.
         if (Input.GetButton("Fire1"))
@@ -192,6 +199,25 @@ public class playerController : MonoBehaviour {
         else
         {
             outOfBoundsText.GetComponent<Text>().enabled = false;
+        }
+    }
+
+    private void FindEnemy()
+    {
+        RaycastHit aim;
+        if (Physics.Raycast(sPoint.transform.position, sPoint.transform.forward, out aim, aimRange))
+        {
+            if (aim.transform.gameObject.tag == "Enemy")
+            {
+                enemyLifeBar.SetActive(true);
+                enemyLife = aim.transform.GetComponent<AIDisc>().life;
+                enemyMaxLife = aim.transform.GetComponent<AIDisc>().maxLife;
+                enemyLifeBar.GetComponent<Image>().fillAmount = enemyLife / enemyMaxLife;
+            }
+        }
+        else
+        {
+            enemyLifeBar.SetActive(false);
         }
     }
 
