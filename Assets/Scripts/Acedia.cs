@@ -1,15 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Acedia : MonoBehaviour {
 
-    public float speed;
+    public float speed,
+                 lifeTotal,
+                 currentLife;
     private float step,
                   timer;
     public GameObject launchPads,
-                      minion;
+                      minion,
+                      lifeBar;
     private GameObject target;
     private Rigidbody rb;
 
@@ -18,6 +22,8 @@ public class Acedia : MonoBehaviour {
     { 
         timer = 0;
         target = GameObject.FindGameObjectWithTag("Base");
+        currentLife = 0;
+        StartCoroutine(FillLife());
     }
 	
 	// Update is called once per frame
@@ -33,6 +39,15 @@ public class Acedia : MonoBehaviour {
             LaunchMinions();
         }	
 	}
+
+    private IEnumerator FillLife()
+    {
+        for (; currentLife <= lifeTotal; currentLife++)
+        {
+            yield return new WaitForSeconds(Time.deltaTime);
+            lifeBar.GetComponent<Image>().fillAmount = currentLife/lifeTotal ;  
+        }
+    }
 
     void LaunchMinions()
     {

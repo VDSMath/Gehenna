@@ -24,15 +24,18 @@ public class AIDisc : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!aggro )
+        if (player != null)
         {
-            FollowPlayer();
-            CheckAggro();
-        }
-        else
-        {
-            CircleAroundPlayer();
-            //Shoot();
+            if (!aggro)
+            {
+                FollowPlayer();
+                CheckAggro();
+            }
+            else
+            {
+                CircleAroundPlayer();
+                //Shoot();
+            }
         }
 	}
 
