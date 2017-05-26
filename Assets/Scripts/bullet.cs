@@ -21,7 +21,8 @@ public class bullet : MonoBehaviour {
 	void Update ()
     {
         //Getting the damage value from the player.
-        damage = player.GetComponent<playerController>().damage;
+        if(player != null)
+            damage = player.GetComponent<playerController>().damage;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -35,6 +36,7 @@ public class bullet : MonoBehaviour {
             //Causing damage based on the player's damage value.
             target.GetComponent<AIDisc>().TakeDamage(damage);
         }
+
         //Also destroying the bullet on collision.
         Destroy(this.gameObject);
     }

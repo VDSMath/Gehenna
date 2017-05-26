@@ -8,14 +8,17 @@ public class Acedia : MonoBehaviour {
 
     public float speed,
                  lifeTotal,
-                 currentLife;
+                 currentLife,
+                 damage;
     private float step,
                   timer;
     public GameObject launchPads,
                       minion,
-                      lifeBar;
+                      lifeBar,
+                      nameText;
     private GameObject target;
     private Rigidbody rb;
+    private Color temp;
 
 	// Use this for initialization
 	void Start ()
@@ -24,6 +27,9 @@ public class Acedia : MonoBehaviour {
         target = GameObject.FindGameObjectWithTag("Base");
         currentLife = 0;
         StartCoroutine(FillLife());
+        temp = nameText.GetComponent<Text>().color;
+        temp.a = 0;
+        nameText.GetComponent<Text>().color = temp;
     }
 	
 	// Update is called once per frame
@@ -44,8 +50,11 @@ public class Acedia : MonoBehaviour {
     {
         for (; currentLife <= lifeTotal; currentLife++)
         {
-            yield return new WaitForSeconds(Time.deltaTime);
-            lifeBar.GetComponent<Image>().fillAmount = currentLife/lifeTotal ;  
+            yield return new WaitForSeconds(Time.deltaTime);           
+            lifeBar.GetComponent<Image>().fillAmount = currentLife/lifeTotal;  
+            temp.a = currentLife / lifeTotal;
+            nameText.GetComponent<Text>().color = temp;
+            
         }
     }
 

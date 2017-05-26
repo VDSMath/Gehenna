@@ -17,11 +17,16 @@ public class playerController : MonoBehaviour {
     public float turnSpeed;
     public float mSensitivity;
 
-    public float shipHealth;
+    private float shipHealth;
+    public float shipMaxHealth;
+    private float shipShield;
+    public float shipMaxShield;
     public float shipShields;
+    private float lastHit;
     private float shieldL;
     private float shieldN;
     private float shieldH;
+    public GameObject lifeBar;  
 
     //Modes.
     bool onSpeed;
@@ -63,6 +68,10 @@ public class playerController : MonoBehaviour {
     {
         Cursor.visible = false;
 
+        lastHit = 0;
+        shipHealth = shipMaxHealth;
+        shipShield = shipMaxShield;
+
         pS = playerShip.GetComponent<Rigidbody>();
 
         speedN = speed;
@@ -92,6 +101,7 @@ public class playerController : MonoBehaviour {
 	
 	void Update ()
     {
+        #region ModeManagement
         //Mode managing.
         if (onSpeed == true)
         {
@@ -145,6 +155,9 @@ public class playerController : MonoBehaviour {
             onAttack = true;
         }
 
+        #endregion
+
+        #region Movement
         //This part takes care of the player movement.
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
@@ -162,7 +175,9 @@ public class playerController : MonoBehaviour {
         mainCamera.transform.DOMove(new Vector3(camPos.transform.position.x, camPos.transform.position.y, camPos.transform.position.z), camLerp);
         //Lerping the camera rotation.
         mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, camPos.transform.rotation, Time.deltaTime * camTurnSpeed);
+        #endregion
 
+        #region Shooting
         //Positions the crosshair appropriately.
         RaycastHit aim;
         if (Physics.Raycast(sPoint.transform.position, sPoint.transform.forward, out aim, aimRange))
@@ -185,12 +200,12 @@ public class playerController : MonoBehaviour {
             GameObject bullet = Instantiate(projectile, sPoint.transform.position, pS.transform.rotation) as GameObject;
             bullet.GetComponent<Rigidbody>().AddForce(pS.transform.forward * bulletSpeed);
         }
+        #endregion
 
-        if (shipHealth < 0)
-        {
-            SceneManager.LoadScene(0);
-        }
+        UpdatePlayerLife();
+        RegenerateShield();
 
+        #region BoundChecks
         CheckBaseDistance();
 
         if (outOfBounds)
@@ -202,6 +217,12 @@ public class playerController : MonoBehaviour {
         {
             outOfBoundsText.GetComponent<Text>().enabled = false;
         }
+        #endregion
+    }
+
+    private void UpdatePlayerLife()
+    {
+        lifeBar.GetComponent<Image>().fillAmount = shipMaxHealth / shipHealth;
     }
 
     private void FindEnemy()
@@ -209,7 +230,7 @@ public class playerController : MonoBehaviour {
         RaycastHit aim;
         if (Physics.Raycast(sPoint.transform.position, sPoint.transform.forward, out aim, aimRange))
         {
-            if (aim.transform.gameObject.tag == "Enemy" && aim.transform.gameObject != null)
+            if (aim.transform.gameObject.tag == "Enemy" && aim.transform != null)
             {
                 targeting = true;
                 StopCoroutine(WaitWithLifeBar());
@@ -286,14 +307,39 @@ public class playerController : MonoBehaviour {
         GameObject.Destroy(this.gameObject);
     }
 
-    public void healthDamage(float amount)
+    public void TakeDamage(float amount)
     {
-        shipHealth -= amount;
+        lastHit = Time.time;
+        if(shipShield > 0)
+        {
+            ShieldDamage(amount);
+        }
+        else
+        {
+            HealthDamage(amount);
+        }
     }
 
-    public void shieldDamage(float amount)
+    private void HealthDamage(float amount)
     {
         shipHealth -= amount;
+        if(shipHealth <= 0)
+        {
+            KillPlayer();
+        }
+    }
+
+    private void ShieldDamage(float amount)
+    {
+        shipShield -= amount;
+    }
+
+    private void RegenerateShield()
+    {
+        if((lastHit - Time.time) >= 5)
+        {
+            shipShield = shipMaxShield;
+        }
     }
 
 }

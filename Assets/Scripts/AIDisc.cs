@@ -9,13 +9,16 @@ public class AIDisc : MonoBehaviour {
                  aggroRadius,
                  step,
                  shootSpeed,
+                 shotOffset,
+                 damage,
                  distance,
                  life,
                  maxLife;
     private float timeCounter,
                   angle;
     public GameObject player,
-                      explosion;
+                      explosion,
+                      projectile;
     private bool aggro;
 
 	// Use this for initialization
@@ -100,6 +103,8 @@ public class AIDisc : MonoBehaviour {
 
     void Shoot()
     {
-
+        Vector3 off = new Vector3(Random.Range(0, shotOffset), Random.Range(0, shotOffset), Random.Range(0, shotOffset));
+        GameObject bullet = Instantiate(projectile, this.transform);
+        bullet.GetComponent<enemyBullet>().target = player.transform.position;
     }
 }
