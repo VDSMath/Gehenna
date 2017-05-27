@@ -6,11 +6,6 @@ public class baseEnemy : MonoBehaviour
     public float health;
     public GameObject explosion;
 
-    public baseEnemy()
-    {
-        health = 20;
-    }
-
     public baseEnemy(float newHealth)
     {
         health = newHealth;

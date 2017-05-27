@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Acedia : MonoBehaviour {
+public class Acedia : baseEnemy {
 
     public float speed,
                  lifeTotal,
-                 currentLife,
-                 damage;
+                 damage,
+                 minionLaunchInterval;
     private float step,
                   timer;
     public GameObject launchPads,
@@ -19,13 +19,19 @@ public class Acedia : MonoBehaviour {
     private GameObject target;
     private Rigidbody rb;
     private Color temp;
+    private bool healthFilled;
+
+    public Acedia(float lifeTotal): base(lifeTotal)
+    {
+        health = 0;
+    }
 
 	// Use this for initialization
 	void Start ()
-    { 
+    {
+        healthFilled = false;
         timer = 0;
         target = GameObject.FindGameObjectWithTag("Base");
-        currentLife = 0;
         StartCoroutine(FillLife());
         temp = nameText.GetComponent<Text>().color;
         temp.a = 0;
@@ -35,27 +41,45 @@ public class Acedia : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        if(health <= -1)
+        {
+            KillEnemy();
+        }
+
         timer += Time.deltaTime;
 
         Move();
         
-        if(timer >= 10)
+        if(timer >= minionLaunchInterval)
         {
             timer = 0;
             LaunchMinions();
+        }
+
+        if (healthFilled)
+        {
+            UpdateLife();
         }	
 	}
 
+    private void UpdateLife()
+    {
+        lifeBar.GetComponent<Image>().fillAmount = health / lifeTotal;
+    }
+
     private IEnumerator FillLife()
     {
-        for (; currentLife <= lifeTotal; currentLife++)
+        
+        for (; health <= lifeTotal; health++)
         {
             yield return new WaitForSeconds(Time.deltaTime);           
-            lifeBar.GetComponent<Image>().fillAmount = currentLife/lifeTotal;  
-            temp.a = currentLife / lifeTotal;
+            lifeBar.GetComponent<Image>().fillAmount = health/lifeTotal;  
+            temp.a = health / lifeTotal;
             nameText.GetComponent<Text>().color = temp;
             
         }
+
+        healthFilled = true;
     }
 
     void LaunchMinions()
