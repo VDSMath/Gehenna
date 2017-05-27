@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIDisc : MonoBehaviour {
+public class AIDisc : baseEnemy {
 
     public float nonAggroSpeed,
                  aggroSpeed,
@@ -12,19 +12,21 @@ public class AIDisc : MonoBehaviour {
                  shotOffset,
                  damage,
                  distance,
-                 life,
                  maxLife;
     private float timeCounter,
                   angle,
                   shotTimer;
     public GameObject player,
-                      explosion,
                       projectile;
     private bool aggro;
 
+    public AIDisc(float maxLife): base(maxLife)
+    {
+        health = maxLife;
+    }
+
 	// Use this for initialization
 	void Start () {
-        life = maxLife;
         aggro = false;
         angle = 0;
         player = GameObject.FindGameObjectWithTag("Player");
@@ -33,6 +35,12 @@ public class AIDisc : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        if(health <= 0)
+        {
+            KillEnemy();
+        }
+
         if (player != null)
         {
             if (!aggro)
@@ -53,23 +61,6 @@ public class AIDisc : MonoBehaviour {
             }
         }
 	}
-
-    public void TakeDamage(float d)
-    {
-        life = life - d;
-        if(life <= 0)
-        {
-            KillEnemy();
-        }
-    }
-
-    private void KillEnemy()
-    {
-        GameObject e = Instantiate(explosion);
-        e.transform.position = transform.position;
-
-        GameObject.Destroy(this.gameObject);
-    }
 
     void FollowPlayer()
     {

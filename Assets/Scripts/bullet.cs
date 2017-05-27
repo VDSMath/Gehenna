@@ -31,10 +31,10 @@ public class bullet : MonoBehaviour {
         GameObject target = collision.gameObject;
 
         //Checking if it's an enemy.
-        if (target.name == "Disc")
+        if (target.tag == "Enemy")
         {
             //Causing damage based on the player's damage value.
-            target.GetComponent<AIDisc>().TakeDamage(damage);
+            target.GetComponent<baseEnemy>().TakeDamage(damage);
         }
 
         //Also destroying the bullet on collision.

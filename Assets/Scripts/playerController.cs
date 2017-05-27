@@ -25,7 +25,7 @@ public class playerController : MonoBehaviour {
     private float shieldL;
     private float shieldN;
     private float shieldH;
-    public GameObject lifeBar;  
+    public GameObject lifeBar, shieldBar;  
 
     //Modes.
     bool onSpeed;
@@ -104,10 +104,14 @@ public class playerController : MonoBehaviour {
         //Mode managing.
         if (onSpeed == true)
         {
+            bool maxShield = false;
+            if (shipShield == shipMaxShield)
+               maxShield = true;
+
             speed = speedH;
             damage = damageL;
             shipMaxShield = shieldL;
-            if(shipShield > shipMaxShield)
+            if(shipShield > shipMaxShield || maxShield)
             {
                 shipShield = shipMaxShield;
             }
@@ -115,10 +119,14 @@ public class playerController : MonoBehaviour {
 
         if (onShield == true)
         {
+            bool maxShield = false;
+            if (shipShield == shipMaxShield)
+                maxShield = true;
+
             speed = speedN;
             damage = damageL;
             shipMaxShield = shieldH;
-            if (shipShield > shipMaxShield)
+            if (shipShield > shipMaxShield || maxShield)
             {
                 shipShield = shipMaxShield;
             }
@@ -126,10 +134,14 @@ public class playerController : MonoBehaviour {
 
         if (onAttack == true)
         {
+            bool maxShield = false;
+            if (shipShield == shipMaxShield)
+                maxShield = true;
+
             speed = speedN;
             damage = damageH;
             shipMaxShield = shieldL;
-            if (shipShield > shipMaxShield)
+            if (shipShield > shipMaxShield || maxShield)
             {
                 shipShield = shipMaxShield;
             }
@@ -224,7 +236,8 @@ public class playerController : MonoBehaviour {
 
     private void UpdatePlayerLife()
     {
-        lifeBar.GetComponent<Image>().fillAmount = shipMaxHealth / shipHealth;
+        lifeBar.GetComponent<Image>().fillAmount = shipHealth / shipMaxHealth;
+        shieldBar.GetComponent<Image>().fillAmount = shipShield / shipMaxShield;
     }
 
     private void FindEnemy()
@@ -237,7 +250,7 @@ public class playerController : MonoBehaviour {
                 targeting = true;
                 StopCoroutine(WaitWithLifeBar());
                 enemyLifeBar.SetActive(true);
-                enemyLife = aim.transform.GetComponent<AIDisc>().life;
+                enemyLife = aim.transform.GetComponent<baseEnemy>().health;
                 enemyMaxLife = aim.transform.GetComponent<AIDisc>().maxLife;
                 enemyLifeBar.GetComponent<Image>().fillAmount = enemyLife / enemyMaxLife;
             }
@@ -296,6 +309,7 @@ public class playerController : MonoBehaviour {
     {
         GameObject e = Instantiate(explosion);
         e.transform.position = transform.position;
+        shipHealth = 0;
 
         Transform[] children = this.GetComponentsInChildren<Transform>();
 
