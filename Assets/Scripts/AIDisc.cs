@@ -15,7 +15,8 @@ public class AIDisc : MonoBehaviour {
                  life,
                  maxLife;
     private float timeCounter,
-                  angle;
+                  angle,
+                  shotTimer;
     public GameObject player,
                       explosion,
                       projectile;
@@ -27,6 +28,7 @@ public class AIDisc : MonoBehaviour {
         aggro = false;
         angle = 0;
         player = GameObject.FindGameObjectWithTag("Player");
+        shotTimer = 0;
 	}
 	
 	// Update is called once per frame
@@ -41,7 +43,13 @@ public class AIDisc : MonoBehaviour {
             else
             {
                 CircleAroundPlayer();
-                //Shoot();
+
+                shotTimer += Time.deltaTime;
+                if (shotTimer >= 3)
+                {
+                   Shoot();
+                   shotTimer = 0;
+                }
             }
         }
 	}
@@ -103,8 +111,8 @@ public class AIDisc : MonoBehaviour {
 
     void Shoot()
     {
-        Vector3 off = new Vector3(Random.Range(0, shotOffset), Random.Range(0, shotOffset), Random.Range(0, shotOffset));
-        GameObject bullet = Instantiate(projectile, this.transform);
-        bullet.GetComponent<enemyBullet>().target = player.transform.position;
+        Vector3 off = new Vector3(Random.Range(-shotOffset, shotOffset), Random.Range(-shotOffset, shotOffset), Random.Range(-shotOffset, shotOffset));
+        GameObject bullet = Instantiate(projectile, this.transform.position , transform.rotation);
+        bullet.GetComponent<enemyBullet>().target = player.transform.position + off;
     }
 }

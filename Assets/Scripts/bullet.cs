@@ -31,7 +31,7 @@ public class bullet : MonoBehaviour {
         GameObject target = collision.gameObject;
 
         //Checking if it's an enemy.
-        if (target.tag == "Enemy")
+        if (target.name == "Disc")
         {
             //Causing damage based on the player's damage value.
             target.GetComponent<AIDisc>().TakeDamage(damage);

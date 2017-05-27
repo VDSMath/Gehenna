@@ -21,7 +21,6 @@ public class playerController : MonoBehaviour {
     public float shipMaxHealth;
     private float shipShield;
     public float shipMaxShield;
-    public float shipShields;
     private float lastHit;
     private float shieldL;
     private float shieldN;
@@ -82,13 +81,13 @@ public class playerController : MonoBehaviour {
         damageL = damageN / 2;
         damageH = damageN * 2;
 
-        shieldN = shipShields;
+        shieldN = shipMaxShield;
         shieldL = shieldN / 2;
         shieldH = shieldN * 2;
 
-        onSpeed = true;
+        onSpeed = false;
         onShield = false;
-        onAttack = false;
+        onAttack = true;
 
         outOfBoundsText.GetComponent<Text>().enabled = false;
         _outOfBoundsTimer = outOfBoundsTimer;
@@ -105,32 +104,35 @@ public class playerController : MonoBehaviour {
         //Mode managing.
         if (onSpeed == true)
         {
-            onShield = false;
-            onAttack = false;
-
             speed = speedH;
             damage = damageL;
-            shipShields = shieldL;
+            shipMaxShield = shieldL;
+            if(shipShield > shipMaxShield)
+            {
+                shipShield = shipMaxShield;
+            }
         }
 
         if (onShield == true)
         {
-            onSpeed = false;
-            onAttack = false;
-
             speed = speedN;
             damage = damageL;
-            shipShields = shieldH;
+            shipMaxShield = shieldH;
+            if (shipShield > shipMaxShield)
+            {
+                shipShield = shipMaxShield;
+            }
         }
 
         if (onAttack == true)
         {
-            onShield = false;
-            onSpeed = false;
-
             speed = speedN;
             damage = damageH;
-            shipShields = shieldL;
+            shipMaxShield = shieldL;
+            if (shipShield > shipMaxShield)
+            {
+                shipShield = shipMaxShield;
+            }
         }
 
         //Mode changing.
@@ -230,7 +232,7 @@ public class playerController : MonoBehaviour {
         RaycastHit aim;
         if (Physics.Raycast(sPoint.transform.position, sPoint.transform.forward, out aim, aimRange))
         {
-            if (aim.transform.gameObject.tag == "Enemy" && aim.transform != null)
+            if (aim.transform.gameObject.name == "Disc" && aim.transform != null)
             {
                 targeting = true;
                 StopCoroutine(WaitWithLifeBar());
@@ -336,7 +338,7 @@ public class playerController : MonoBehaviour {
 
     private void RegenerateShield()
     {
-        if((lastHit - Time.time) >= 5)
+        if((lastHit - Time.time) >= 5 && shipShield != shipMaxShield)
         {
             shipShield = shipMaxShield;
         }
