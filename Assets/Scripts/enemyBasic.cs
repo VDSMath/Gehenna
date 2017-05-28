@@ -31,7 +31,8 @@ public class enemyBasic : MonoBehaviour {
     //Function for taking damage. Shoul be called by the damage dealer. Set to public to be accessible by other scripts.
     public void takeDamage (float amount)
     {
-        health -= amount;
+
+		health -= amount;
         Debug.Log("Damage");
     }
 		

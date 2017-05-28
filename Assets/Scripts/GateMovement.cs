@@ -8,29 +8,40 @@ public class GateMovement : MonoBehaviour {
 
 	private Vector3 gateFinalPos;
 	public float XFinalPos;
-
-	//These will take care of the movement
 	public float speed;
-	//private float distCovered;
-	//private float fracJourney;
-	//private float startTime;
-	//private float length;
 
-	// Use this for initialization
 	void Start () {
 
-		//startTime = Time.time;
 		gateFinalPos = new Vector3( XFinalPos , gate.transform.position.y , gate.transform.position.z);
-		//length = Vector3.Distance (gate.transform.position, gateFinalPos);
 
 	}
 	
-	// Update is called once per frame
 	void Update () {
 
-		//float distCovered = (Time.time - startTime) * speed;
-		//float fracJourney = distCovered / length;
-		gate.transform.position = Vector3.Lerp( gate.transform.position, gateFinalPos, Time.deltaTime * speed);
+		if (this.name == "Gate1" || this.name == "Gate2") {
+
+			if (!GameObject.Find ("normalCube") && !GameObject.Find ("normalCube (1)") && !GameObject.Find ("normalCube (2)") && !GameObject.Find ("normalCube (3)")) {
+		
+				gate.transform.position = Vector3.Lerp (gate.transform.position, gateFinalPos, Time.deltaTime * speed);
+
+			}
+		} else if (this.name == "Gate3" || this.name == "Gate4") {
+		
+			if (!GameObject.Find ("StrongCube") && !GameObject.Find ("StrongCube (1)") && !GameObject.Find ("StrongCube (2)") && !GameObject.Find ("StrongCube (3)")) {
+
+				gate.transform.position = Vector3.Lerp (gate.transform.position, gateFinalPos, Time.deltaTime * speed);
+
+			}
+		
+		} else if (this.name == "Gate5" || this.name == "Gate6") {
+		
+			if (GameObject.Find ("player").GetComponent<Transform> ().position.y > 5150) {
+
+				gate.transform.position = Vector3.Lerp (gate.transform.position, gateFinalPos, Time.deltaTime * speed);
+
+			}
+
+		}
 
 	}
 }

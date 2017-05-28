@@ -65,8 +65,8 @@ public class playerController : MonoBehaviour {
         shieldL = shieldN / 2;
         shieldH = shieldN * 2;
 
-        onSpeed = true;
-        onShield = false;
+		onSpeed = false;
+		onShield = true;
         onAttack = false;
     }
 	
