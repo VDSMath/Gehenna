@@ -2,37 +2,63 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIDisc : MonoBehaviour {
+public class AIDisc : baseEnemy {
 
     public float nonAggroSpeed,
                  aggroSpeed,
                  aggroRadius,
                  step,
                  shootSpeed,
-                 distance;
+                 shotOffset,
+                 damage,
+                 distance,
+                 maxLife;
     private float timeCounter,
-                  angle;
-    private GameObject player;
+                  angle,
+                  shotTimer;
+    public GameObject player,
+                      projectile;
     private bool aggro;
+
+    public AIDisc(float maxLife): base(maxLife)
+    {
+        health = maxLife;
+    }
 
 	// Use this for initialization
 	void Start () {
         aggro = false;
         angle = 0;
         player = GameObject.FindGameObjectWithTag("Player");
+        shotTimer = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (!aggro )
+
+        if(health <= 0)
         {
-            FollowPlayer();
-            CheckAggro();
+            KillEnemy();
         }
-        else
+
+        if (player != null)
         {
-            CircleAroundPlayer();
-            //Shoot();
+            if (!aggro)
+            {
+                FollowPlayer();
+                CheckAggro();
+            }
+            else
+            {
+                CircleAroundPlayer();
+
+                shotTimer += Time.deltaTime;
+                if (shotTimer >= 3)
+                {
+                   Shoot();
+                   shotTimer = 0;
+                }
+            }
         }
 	}
 
@@ -76,6 +102,8 @@ public class AIDisc : MonoBehaviour {
 
     void Shoot()
     {
-
+        Vector3 off = new Vector3(Random.Range(-shotOffset, shotOffset), Random.Range(-shotOffset, shotOffset), Random.Range(-shotOffset, shotOffset));
+        GameObject bullet = Instantiate(projectile, this.transform.position , transform.rotation);
+        bullet.GetComponent<enemyBullet>().target = player.transform.position + off;
     }
 }
