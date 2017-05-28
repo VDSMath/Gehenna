@@ -1,11 +1,13 @@
-﻿using DG.Tweening;
+
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class playerController : MonoBehaviour {
+public class playerController : MonoBehaviour
+{
 
     //Ship variables.
     public GameObject playerShip;
@@ -25,7 +27,24 @@ public class playerController : MonoBehaviour {
     private float shieldL;
     private float shieldN;
     private float shieldH;
-    public GameObject lifeBar, shieldBar;  
+    public GameObject lifeBar, shieldBar;
+
+    //Ship parts.
+    public GameObject leftFin;
+    public GameObject rightFin;
+    public GameObject tlFlap;
+    public GameObject trFlap;
+    public GameObject blFlap;
+    public GameObject brFlap;
+    public GameObject lExhaust;
+    public GameObject rExhaust;
+    public GameObject shield;
+    public GameObject shieldDoors;
+
+    //UI parts.
+    public GameObject attackUI;
+    public GameObject shieldUI;
+    public GameObject speedUI;
 
     //Modes.
     bool onSpeed;
@@ -40,6 +59,7 @@ public class playerController : MonoBehaviour {
 
     //Shooting variables.
     public GameObject projectile;
+    public GameObject projectileH;
     public float bulletSpeed;
     public GameObject sPoint;
     public float damage;
@@ -52,7 +72,7 @@ public class playerController : MonoBehaviour {
     //int aimY = Screen.height / 2;
     public float enemyLife,
                  enemyMaxLife;
-    private bool targeting;    
+    private bool targeting;
 
     public GameObject _base,
                       explosion,
@@ -63,7 +83,7 @@ public class playerController : MonoBehaviour {
     private bool outOfBounds;
     private float _outOfBoundsTimer;
 
-    void Start ()
+    void Start()
     {
         Cursor.visible = false;
 
@@ -97,8 +117,8 @@ public class playerController : MonoBehaviour {
         enemyLifeBar.SetActive(false);
         targeting = false;
     }
-	
-	void Update ()
+
+    void Update()
     {
         #region ModeManagement
         //Mode managing.
@@ -106,12 +126,12 @@ public class playerController : MonoBehaviour {
         {
             bool maxShield = false;
             if (shipShield == shipMaxShield)
-               maxShield = true;
+                maxShield = true;
 
             speed = speedH;
             damage = damageL;
             shipMaxShield = shieldL;
-            if(shipShield > shipMaxShield || maxShield)
+            if (shipShield > shipMaxShield || maxShield)
             {
                 shipShield = shipMaxShield;
             }
@@ -153,6 +173,15 @@ public class playerController : MonoBehaviour {
             onSpeed = true;
             onShield = false;
             onAttack = false;
+            leftFin.transform.DOLocalRotate(new Vector3(0, 0, -80), 1);
+            rightFin.transform.DOLocalRotate(new Vector3(0, 0, 80), 1);
+
+            speedUI.SetActive(true);
+            attackUI.SetActive(false);
+            shieldUI.SetActive(false);
+
+            shield.SetActive(false);
+            shieldDoors.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -160,6 +189,15 @@ public class playerController : MonoBehaviour {
             onSpeed = false;
             onShield = true;
             onAttack = false;
+            leftFin.transform.DOLocalRotate(new Vector3(0, 0, 0), 1);
+            rightFin.transform.DOLocalRotate(new Vector3(0, 0, 0), 1);
+
+            speedUI.SetActive(false);
+            attackUI.SetActive(false);
+            shieldUI.SetActive(true);
+
+            shield.SetActive(true);
+            shieldDoors.SetActive(false);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -167,6 +205,15 @@ public class playerController : MonoBehaviour {
             onSpeed = false;
             onShield = false;
             onAttack = true;
+            leftFin.transform.DOLocalRotate(new Vector3(0, 0, 0), 1);
+            rightFin.transform.DOLocalRotate(new Vector3(0, 0, 0), 1);
+
+            speedUI.SetActive(false);
+            attackUI.SetActive(true);
+            shieldUI.SetActive(false);
+
+            shield.SetActive(false);
+            shieldDoors.SetActive(true);
         }
 
         #endregion
@@ -178,12 +225,38 @@ public class playerController : MonoBehaviour {
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
-        transform.Rotate(Vector3.back * moveHorizontal* turnSpeed);
+        transform.Rotate(Vector3.back * moveHorizontal * turnSpeed);
         transform.Rotate(Vector3.right * moveVertical);
         transform.Rotate(Vector3.left * mouseY * mSensitivity);
         transform.Rotate(Vector3.up * mouseX * mSensitivity);
 
         pS.transform.position += transform.forward * Time.deltaTime * speed;
+
+        //Moving the flaps.
+        tlFlap.transform.DOLocalRotate(new Vector3((-30 * moveVertical), 0, 0), 0.5f);
+        trFlap.transform.DOLocalRotate(new Vector3((-30 * moveVertical), 0, 0), 0.5f);
+        blFlap.transform.DOLocalRotate(new Vector3((-30 * moveVertical), 0, 0), 0.5f);
+        brFlap.transform.DOLocalRotate(new Vector3((-30 * moveVertical), 0, 0), 0.5f);
+
+        tlFlap.transform.DOLocalRotate(new Vector3((-30 * moveHorizontal), 0, 0), 0.5f);
+        trFlap.transform.DOLocalRotate(new Vector3((30 * moveHorizontal), 0, 0), 0.5f);
+        blFlap.transform.DOLocalRotate(new Vector3((-30 * moveHorizontal), 0, 0), 0.5f);
+        brFlap.transform.DOLocalRotate(new Vector3((30 * moveHorizontal), 0, 0), 0.5f);
+
+        tlFlap.transform.DOLocalRotate(new Vector3((-60 * mouseY), 0, 0), 0.5f);
+        trFlap.transform.DOLocalRotate(new Vector3((-60 * mouseY), 0, 0), 0.5f);
+        blFlap.transform.DOLocalRotate(new Vector3((-60 * mouseY), 0, 0), 0.5f);
+        brFlap.transform.DOLocalRotate(new Vector3((-60 * mouseY), 0, 0), 0.5f);
+
+        //Moving the exhaust.
+        lExhaust.transform.DOLocalRotate(new Vector3((30 * moveVertical), -180, 0), 0.5f);
+        rExhaust.transform.DOLocalRotate(new Vector3((30 * moveVertical), -180, 0), 0.5f);
+
+        lExhaust.transform.DOLocalRotate(new Vector3((30 * moveHorizontal), -180, 0), 0.5f);
+        rExhaust.transform.DOLocalRotate(new Vector3((-30 * moveHorizontal), -180, 0), 0.5f);
+
+        lExhaust.transform.DOLocalRotate(new Vector3((60 * mouseY), -180, 0), 0.5f);
+        rExhaust.transform.DOLocalRotate(new Vector3((60 * mouseY), -180, 0), 0.5f);
 
         //Lerping the camera to its place.
         mainCamera.transform.DOMove(new Vector3(camPos.transform.position.x, camPos.transform.position.y, camPos.transform.position.z), camLerp);
@@ -211,9 +284,20 @@ public class playerController : MonoBehaviour {
         //Shooting.
         if (Input.GetButton("Fire1"))
         {
-            GameObject bullet = Instantiate(projectile, sPoint.transform.position, pS.transform.rotation) as GameObject;
-            bullet.GetComponent<Rigidbody>().AddForce(pS.transform.forward * bulletSpeed);
+            if (onAttack == true)
+            {
+                GameObject bullet = Instantiate(projectileH, sPoint.transform.position, pS.transform.rotation) as GameObject;
+                bullet.GetComponent<Rigidbody>().AddForce(pS.transform.forward * bulletSpeed);
+
+            }
+            else
+            {
+                GameObject bullet = Instantiate(projectile, sPoint.transform.position, pS.transform.rotation) as GameObject;
+                bullet.GetComponent<Rigidbody>().AddForce(pS.transform.forward * bulletSpeed);
+            }
+
         }
+                
         #endregion
 
         UpdatePlayerLife();
@@ -250,7 +334,7 @@ public class playerController : MonoBehaviour {
                 targeting = true;
                 StopCoroutine(WaitWithLifeBar());
                 enemyLifeBar.SetActive(true);
-                enemyLife = aim.transform.GetComponent<baseEnemy>().health;
+                //enemyLife = aim.transform.GetComponent<baseEnemy>().health;
                 enemyMaxLife = aim.transform.GetComponent<AIDisc>().maxLife;
                 enemyLifeBar.GetComponent<Image>().fillAmount = enemyLife / enemyMaxLife;
             }
@@ -274,7 +358,7 @@ public class playerController : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag ==  "Ground" || collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Enemy")
         {
             KillPlayer();
         }
@@ -282,7 +366,7 @@ public class playerController : MonoBehaviour {
 
     public void CheckBaseDistance()
     {
-        if(Mathf.Abs(Vector3.Distance(transform.position, _base.transform.position)) >= mapRadius)
+        if (Mathf.Abs(Vector3.Distance(transform.position, _base.transform.position)) >= mapRadius)
         {
             outOfBounds = true;
         }
@@ -298,7 +382,7 @@ public class playerController : MonoBehaviour {
         _outOfBoundsTimer -= Time.deltaTime;                                                  //Converte o float timer para um string com duas casas decimais.
         outOfBoundsText.GetComponent<Text>().text = "WARNING!!!\nYOU ARE LEAVING THE AREA!!!\n" + _outOfBoundsTimer.ToString("F2");
 
-        if(_outOfBoundsTimer <= 0)
+        if (_outOfBoundsTimer <= 0)
         {
             outOfBoundsText.GetComponent<Text>().text = "You were out of bounds for too long.";
             KillPlayer();
@@ -313,9 +397,9 @@ public class playerController : MonoBehaviour {
 
         Transform[] children = this.GetComponentsInChildren<Transform>();
 
-        foreach(Transform child in children)
+        foreach (Transform child in children)
         {
-            if(child.gameObject != this.gameObject)
+            if (child.gameObject != this.gameObject)
             {
                 GameObject.Destroy(child.gameObject);
             }
@@ -326,7 +410,7 @@ public class playerController : MonoBehaviour {
     public void TakeDamage(float amount)
     {
         lastHit = Time.time;
-        if(shipShield > 0)
+        if (shipShield > 0)
         {
             ShieldDamage(amount);
         }
@@ -339,7 +423,7 @@ public class playerController : MonoBehaviour {
     private void HealthDamage(float amount)
     {
         shipHealth -= amount;
-        if(shipHealth <= 0)
+        if (shipHealth <= 0)
         {
             KillPlayer();
         }
@@ -352,7 +436,7 @@ public class playerController : MonoBehaviour {
 
     private void RegenerateShield()
     {
-        if((lastHit - Time.time) >= 5 && shipShield != shipMaxShield)
+        if ((lastHit - Time.time) >= 5 && shipShield != shipMaxShield)
         {
             shipShield = shipMaxShield;
         }
