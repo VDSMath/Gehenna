@@ -45,6 +45,7 @@ public class playerController : MonoBehaviour
     public GameObject attackUI;
     public GameObject shieldUI;
     public GameObject speedUI;
+	public GameObject gameOverMenu;
 
     //Modes.
     bool onSpeed;
@@ -405,6 +406,8 @@ public class playerController : MonoBehaviour
             }
         }
         GameObject.Destroy(this.gameObject);
+		gameOverMenu.SetActive (true);
+
     }
 
     public void TakeDamage(float amount)
@@ -441,5 +444,6 @@ public class playerController : MonoBehaviour
             shipShield = shipMaxShield;
         }
     }
+
 
 }
