@@ -51,6 +51,7 @@ public class AIDisc : baseEnemy {
             else
             {
                 CircleAroundPlayer();
+                transform.LookAt(player.transform);
 
                 shotTimer += Time.deltaTime;
                 if (shotTimer >= 3)

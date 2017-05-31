@@ -21,58 +21,70 @@ public class PauseGame : MonoBehaviour {
 
 	void Update () {
 
-		if (player.GetComponent<Transform> ().position.z > 200 && popup1 == false) {
+        if (player != null)
+        {
 
-			pause (1);
-			popup1 = true;
+            if (player.GetComponent<Transform>().position.z > 200 && popup1 == false)
+            {
 
-		}
+                pause(1);
+                popup1 = true;
 
-		if (player.GetComponent<Transform> ().position.z > 3300 && popup2 == false) {
+            }
 
-			pause (2);
-			popup2 = true;
+            if (player.GetComponent<Transform>().position.z > 3300 && popup2 == false)
+            {
 
-		}
+                pause(2);
+                popup2 = true;
 
-		if (player.GetComponent<Transform> ().position.z > 5000 && popup3 == false) {
+            }
 
-			pause (3);
-			popup3 = true;
+            if (player.GetComponent<Transform>().position.z > 5000 && popup3 == false)
+            {
 
-		}
+                pause(3);
+                popup3 = true;
 
-		if (player.GetComponent<Transform> ().position.y > 1900 && popup4 == false) {
+            }
 
-			pause (4);
-			popup4 = true;
+            if (player.GetComponent<Transform>().position.y > 1900 && popup4 == false)
+            {
 
-		}
+                pause(4);
+                popup4 = true;
 
-		if (player.GetComponent<Transform> ().position.y > 1950 && popup5 == false) {
+            }
 
-			pause (5);
-			popup5 = true;
+            if (player.GetComponent<Transform>().position.y > 1950 && popup5 == false)
+            {
 
-		}
-			
+                pause(5);
+                popup5 = true;
 
-		if (Input.GetKeyDown (KeyCode.Escape)) 
-		{
+            }
 
-			if (pauseBackground.activeInHierarchy == false) {
 
-				pause (0);
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
 
-			} else if(helpPanel.activeInHierarchy == true)
-				{
-				
-				helpPanel.gameObject.SetActive (false);
-				pausePanel.gameObject.SetActive (true);
+                if (pauseBackground.activeInHierarchy == false)
+                {
 
-				} else unpause ();
+                    pause(0);
 
-		}
+                }
+                else if (helpPanel.activeInHierarchy == true)
+                {
+
+                    helpPanel.gameObject.SetActive(false);
+                    pausePanel.gameObject.SetActive(true);
+
+                }
+                else unpause();
+
+            }
+        }
 	}
 
 	public void pause(int panel) 

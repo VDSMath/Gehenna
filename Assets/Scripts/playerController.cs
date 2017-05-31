@@ -406,7 +406,8 @@ public class playerController : MonoBehaviour
             }
         }
         GameObject.Destroy(this.gameObject);
-		gameOverMenu.SetActive (true);
+        Cursor.visible = true;
+        gameOverMenu.SetActive (true);
 
     }
 

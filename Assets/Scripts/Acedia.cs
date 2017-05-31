@@ -96,6 +96,7 @@ public class Acedia : baseEnemy {
 
     void Move()
     {
+        transform.LookAt(target.transform);
         step = speed * Time.deltaTime;
 
         //Segue o objeto de referência(target) apenas nas coordenadas X e Z.
