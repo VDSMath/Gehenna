@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PauseGame : MonoBehaviour {
 
@@ -21,70 +20,58 @@ public class PauseGame : MonoBehaviour {
 
 	void Update () {
 
-        if (player != null)
-        {
+		//if (player.GetComponent<Transform> ().position.z > 200 && popup1 == false) {
 
-            if (player.GetComponent<Transform>().position.z > 200 && popup1 == false)
-            {
+		//	pause (1);
+		//	popup1 = true;
 
-                pause(1);
-                popup1 = true;
+		//}
 
-            }
+		//if (player.GetComponent<Transform> ().position.z > 3300 && popup2 == false) {
 
-            if (player.GetComponent<Transform>().position.z > 3300 && popup2 == false)
-            {
+		//	pause (2);
+		//	popup2 = true;
 
-                pause(2);
-                popup2 = true;
+		//}
 
-            }
+		//if (player.GetComponent<Transform> ().position.z > 5000 && popup3 == false) {
 
-            if (player.GetComponent<Transform>().position.z > 5000 && popup3 == false)
-            {
+		//	pause (3);
+		//	popup3 = true;
 
-                pause(3);
-                popup3 = true;
+		//}
 
-            }
+		//if (player.GetComponent<Transform> ().position.y > 1900 && popup4 == false) {
 
-            if (player.GetComponent<Transform>().position.y > 1900 && popup4 == false)
-            {
+		//	pause (4);
+		//	popup4 = true;
 
-                pause(4);
-                popup4 = true;
+		//}
 
-            }
+		//if (player.GetComponent<Transform> ().position.y > 1950 && popup5 == false) {
 
-            if (player.GetComponent<Transform>().position.y > 1950 && popup5 == false)
-            {
+		//	pause (5);
+		//	popup5 = true;
 
-                pause(5);
-                popup5 = true;
+		//}
+			
 
-            }
+		if (Input.GetKeyDown (KeyCode.Escape)) 
+		{
 
+			if (pauseBackground.activeInHierarchy == false) {
 
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
+				pause (0);
 
-                if (pauseBackground.activeInHierarchy == false)
-                {
+			} else if(helpPanel.activeInHierarchy == true)
+				{
+				
+				helpPanel.gameObject.SetActive (false);
+				pausePanel.gameObject.SetActive (true);
 
-                    pause(0);
+				} else unpause ();
 
-                }
-                else if (helpPanel.activeInHierarchy == true)
-                {
-
-                    helpPanel.gameObject.SetActive(false);
-                    pausePanel.gameObject.SetActive(true);
-
-                }
-                else unpause();
-
-            }
-        }
+		}
 	}
 
 	public void pause(int panel) 
@@ -179,9 +166,5 @@ public class PauseGame : MonoBehaviour {
 
 	}
 		
-	public void restart(){
 
-		Scene loadedLevel = SceneManager.GetActiveScene ();
-		SceneManager.LoadScene (loadedLevel.buildIndex);
-	}
 }

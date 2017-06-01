@@ -45,7 +45,6 @@ public class playerController : MonoBehaviour
     public GameObject attackUI;
     public GameObject shieldUI;
     public GameObject speedUI;
-	public GameObject gameOverMenu;
 
     //Modes.
     bool onSpeed;
@@ -66,7 +65,7 @@ public class playerController : MonoBehaviour
     public float damage;
     private float damageL;
     private float damageN;
-    public float damageH;
+    private float damageH;
     public float aimRange;
     public GameObject crosshair;
     //int aimX = Screen.width / 2;
@@ -305,7 +304,8 @@ public class playerController : MonoBehaviour
         RegenerateShield();
 
         #region BoundChecks
-        CheckBaseDistance();
+        if(_base != null)
+            CheckBaseDistance();
 
         if (outOfBounds)
         {
@@ -335,7 +335,7 @@ public class playerController : MonoBehaviour
                 targeting = true;
                 StopCoroutine(WaitWithLifeBar());
                 enemyLifeBar.SetActive(true);
-                //enemyLife = aim.transform.GetComponent<baseEnemy>().health;
+                enemyLife = aim.transform.GetComponent<baseEnemy>().health;
                 enemyMaxLife = aim.transform.GetComponent<AIDisc>().maxLife;
                 enemyLifeBar.GetComponent<Image>().fillAmount = enemyLife / enemyMaxLife;
             }
@@ -345,7 +345,7 @@ public class playerController : MonoBehaviour
             if (enemyLifeBar.activeSelf && targeting)
             {
                 targeting = false;
-                //enemyLifeBar.SetActive(false);
+                enemyLifeBar.SetActive(false);
                 StartCoroutine(WaitWithLifeBar());
             }
         }
@@ -406,9 +406,6 @@ public class playerController : MonoBehaviour
             }
         }
         GameObject.Destroy(this.gameObject);
-        Cursor.visible = true;
-        gameOverMenu.SetActive (true);
-
     }
 
     public void TakeDamage(float amount)
@@ -445,6 +442,5 @@ public class playerController : MonoBehaviour
             shipShield = shipMaxShield;
         }
     }
-
 
 }
