@@ -44,7 +44,6 @@ public class bullet : MonoBehaviour {
         {
 
             //Causing damage based on the player's damage value.
-            Debug.Log("damage");
             target.GetComponent<baseEnemy>().TakeDamage(damage);
 
         }
