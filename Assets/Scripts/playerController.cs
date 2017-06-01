@@ -66,7 +66,7 @@ public class playerController : MonoBehaviour
     public float damage;
     private float damageL;
     private float damageN;
-    private float damageH;
+    public float damageH;
     public float aimRange;
     public GameObject crosshair;
     //int aimX = Screen.width / 2;
