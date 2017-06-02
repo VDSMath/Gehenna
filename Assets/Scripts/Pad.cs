@@ -10,7 +10,7 @@ public class Pad : MonoBehaviour {
     {
         GameObject target = collision.gameObject;
 
-        if(target.tag == "Bullet")
+        if(target.tag == "Bullet" && acedia.GetComponent<Acedia>().hatchOpen)
         {
             acedia.GetComponent<Acedia>().TakeDamage(target.GetComponent<bullet>().damage);
         }

@@ -20,8 +20,8 @@ public class Acedia : baseEnemy {
     private GameObject target;
     private Rigidbody rb;
     private Color temp;
-    private bool healthFilled,
-                 hatchOpen;
+    private bool healthFilled;
+    public bool  hatchOpen;
 
     public Acedia(float lifeTotal): base(lifeTotal)
     {
