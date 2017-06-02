@@ -15,11 +15,13 @@ public class Acedia : baseEnemy {
     public GameObject launchPads,
                       minion,
                       lifeBar,
-                      nameText;
+                      nameText,
+                      body;
     private GameObject target;
     private Rigidbody rb;
     private Color temp;
-    private bool healthFilled;
+    private bool healthFilled,
+                 hatchOpen;
 
     public Acedia(float lifeTotal): base(lifeTotal)
     {
@@ -29,6 +31,7 @@ public class Acedia : baseEnemy {
 	// Use this for initialization
 	void Start ()
     {
+        hatchOpen = false;
         healthFilled = false;
         timer = 0;
         target = GameObject.FindGameObjectWithTag("Base");
@@ -69,7 +72,7 @@ public class Acedia : baseEnemy {
 
     private IEnumerator FillLife()
     {
-        
+            
         for (; health <= lifeTotal; health++)
         {
             yield return new WaitForSeconds(Time.deltaTime);           
@@ -84,6 +87,7 @@ public class Acedia : baseEnemy {
 
     void LaunchMinions()
     {
+        StartCoroutine(OpenHatch());
         Transform[] allChildren = launchPads.GetComponentsInChildren<Transform>();      
         foreach (Transform child in allChildren)
         {
@@ -94,13 +98,22 @@ public class Acedia : baseEnemy {
         }
     }
 
+    private IEnumerator OpenHatch()
+    {
+        body.GetComponent<Animator>().Play("b1Open");
+        hatchOpen = true;
+        yield return new WaitForSeconds(8);
+        hatchOpen = false;
+        body.GetComponent<Animator>().Play("b1Close");
+    }
+
     void Move()
     {
         transform.LookAt(target.transform);
         step = speed * Time.deltaTime;
 
         //Segue o objeto de referência(target) apenas nas coordenadas X e Z.
-        transform.position = Vector3.MoveTowards(transform.position, 
+        transform.parent.position = Vector3.MoveTowards(transform.parent.position, 
                                                  new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z),
                                                  step);
     }
