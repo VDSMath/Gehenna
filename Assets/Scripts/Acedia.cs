@@ -36,9 +36,9 @@ public class Acedia : baseEnemy {
         timer = 0;
         target = GameObject.FindGameObjectWithTag("Base");
         StartCoroutine(FillLife());
-        temp = nameText.GetComponent<Text>().color;
-        temp.a = 0;
-        nameText.GetComponent<Text>().color = temp;
+        //temp = nameText.GetComponent<Text>().color;
+        // temp.a = 0;
+        // nameText.GetComponent<Text>().color = temp;
     }
 	
 	// Update is called once per frame
@@ -78,7 +78,7 @@ public class Acedia : baseEnemy {
             yield return new WaitForSeconds(Time.deltaTime);           
             lifeBar.GetComponent<Slider>().value = health;  
             temp.a = health / lifeTotal;
-            nameText.GetComponent<Text>().color = temp;
+            //nameText.GetComponent<TextMesh>().color = temp;
             
         }
 

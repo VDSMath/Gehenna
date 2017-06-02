@@ -24,45 +24,45 @@ public class PauseGame : MonoBehaviour {
         if (player != null)
         {
 
-            if (player.GetComponent<Transform>().position.z > 200 && popup1 == false)
-            {
+            //if (player.getcomponent<transform>().position.z > 200 && popup1 == false)
+            //{
 
-                pause(1);
-                popup1 = true;
+            //    pause(1);
+            //    popup1 = true;
 
-            }
+            //}
 
-            if (player.GetComponent<Transform>().position.z > 3300 && popup2 == false)
-            {
+            //if (player.getcomponent<transform>().position.z > 3300 && popup2 == false)
+            //{
 
-                pause(2);
-                popup2 = true;
+            //    pause(2);
+            //    popup2 = true;
 
-            }
+            //}
 
-            if (player.GetComponent<Transform>().position.z > 5000 && popup3 == false)
-            {
+            //if (player.getcomponent<transform>().position.z > 5000 && popup3 == false)
+            //{
 
-                pause(3);
-                popup3 = true;
+            //    pause(3);
+            //    popup3 = true;
 
-            }
+            //}
 
-            if (player.GetComponent<Transform>().position.y > 1900 && popup4 == false)
-            {
+            //if (player.getcomponent<transform>().position.y > 1900 && popup4 == false)
+            //{
 
-                pause(4);
-                popup4 = true;
+            //    pause(4);
+            //    popup4 = true;
 
-            }
+            //}
 
-            if (player.GetComponent<Transform>().position.y > 1950 && popup5 == false)
-            {
+            //if (player.getcomponent<transform>().position.y > 1950 && popup5 == false)
+            //{
 
-                pause(5);
-                popup5 = true;
+            //    pause(5);
+            //    popup5 = true;
 
-            }
+            //}
 
 
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -98,8 +98,7 @@ public class PauseGame : MonoBehaviour {
 			Time.timeScale = 0;
 			Cursor.visible = true;
 			pauseBackground.SetActive (true);
-			popupPanel.SetActive (true);
-			text1.SetActive (true);
+			//popupPanel.SetActive (true);
 			player.GetComponent<playerController> ().enabled = false;
 			break;
 
@@ -109,8 +108,7 @@ public class PauseGame : MonoBehaviour {
 			Time.timeScale = 0;
 			Cursor.visible = true;
 			pauseBackground.SetActive (true);
-			popupPanel.SetActive (true);
-			text2.SetActive (true);
+			//popupPanel.SetActive (true);
 			player.GetComponent<playerController> ().enabled = false;
 			break;
 
@@ -120,8 +118,7 @@ public class PauseGame : MonoBehaviour {
 			Time.timeScale = 0;
 			Cursor.visible = true;
 			pauseBackground.SetActive (true);
-			popupPanel.SetActive (true);
-			text3.SetActive (true);
+			//popupPanel.SetActive (true);
 			player.GetComponent<playerController> ().enabled = false;
 			break;
 
@@ -131,8 +128,7 @@ public class PauseGame : MonoBehaviour {
 			Time.timeScale = 0;
 			Cursor.visible = true;
 			pauseBackground.SetActive (true);
-			popupPanel.SetActive (true);
-			text4.SetActive (true);
+			//popupPanel.SetActive (true);
 			player.GetComponent<playerController> ().enabled = false;
 			break;
 
@@ -142,8 +138,7 @@ public class PauseGame : MonoBehaviour {
 			Time.timeScale = 0;
 			Cursor.visible = true;
 			pauseBackground.SetActive (true);
-			popupPanel.SetActive (true);
-			text5.SetActive (true);
+			//popupPanel.SetActive (true);
 			player.GetComponent<playerController> ().enabled = false;
 			break;
 
@@ -169,13 +164,9 @@ public class PauseGame : MonoBehaviour {
 		Cursor.visible = false;
 		pauseBackground.SetActive (false);
 		pausePanel.SetActive (false);
-		popupPanel.SetActive (false);
-		text1.SetActive (false);
-		text2.SetActive (false);
-		text3.SetActive (false);
-		text4.SetActive (false);
-		text5.SetActive (false);
-		player.GetComponent<playerController>().enabled = true ;
+		//popupPanel.SetActive (false);
+        if(player != null)
+		    player.GetComponent<playerController>().enabled = true ;
 
 	}
 		
