@@ -64,7 +64,7 @@ public class Acedia : baseEnemy {
 
     private void UpdateLife()
     {
-        lifeBar.GetComponent<Image>().fillAmount = health / lifeTotal;
+        lifeBar.GetComponent<Slider>().value = health;
     }
 
     private IEnumerator FillLife()
@@ -73,7 +73,7 @@ public class Acedia : baseEnemy {
         for (; health <= lifeTotal; health++)
         {
             yield return new WaitForSeconds(Time.deltaTime);           
-            lifeBar.GetComponent<Image>().fillAmount = health/lifeTotal;  
+            lifeBar.GetComponent<Slider>().value = health;  
             temp.a = health / lifeTotal;
             nameText.GetComponent<Text>().color = temp;
             
@@ -96,6 +96,7 @@ public class Acedia : baseEnemy {
 
     void Move()
     {
+        transform.LookAt(target.transform);
         step = speed * Time.deltaTime;
 
         //Segue o objeto de referência(target) apenas nas coordenadas X e Z.

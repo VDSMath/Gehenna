@@ -5,15 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class LoadSceneOnClick : MonoBehaviour {
 
-	public void LoadByIndex (float seconds)
+	public void LoadByIndex (int sceneIndex)
 	{
-        StartCoroutine(WaitAndLoad(seconds));
-	}
 
-    public IEnumerator WaitAndLoad(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        SceneManager.LoadScene(1);
-    }
+		SceneManager.LoadScene (sceneIndex);
+
+	}
 
 }

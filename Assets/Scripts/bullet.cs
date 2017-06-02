@@ -44,6 +44,7 @@ public class bullet : MonoBehaviour {
         {
 
             //Causing damage based on the player's damage value.
+            Debug.Log("damage");
             target.GetComponent<baseEnemy>().TakeDamage(damage);
 
         }
@@ -52,7 +53,7 @@ public class bullet : MonoBehaviour {
                  target.name == "StrongCube (2)" ||
                  target.name == "StrongCube (3)")
         {
-            if (damage == 20)
+            if (damage == player.GetComponent<playerController>().damageH)
             {
                 //Causing damage based on the player's damage value.
                 Debug.Log("damage");
