@@ -362,7 +362,7 @@ public class playerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Ground"|| collision.gameObject.tag == "Untagged" || collision.gameObject.tag == "Enemy")
         {
             KillPlayer();
         }
